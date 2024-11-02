@@ -65,7 +65,7 @@ function App() {
     </button>
   );
 
-  const windowSize = 6;
+  const windowSize = 5;
   const startPage = Math.max(1, page - Math.floor(windowSize / 2));
   const endPage = Math.min(30, startPage + windowSize + 1);
   const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
