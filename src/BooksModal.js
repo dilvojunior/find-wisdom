@@ -1,6 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const BookModal = ({ isOpen, closeModal, selectedBook }) => {
+  
+  useEffect(() => {
+    const keyCloseModal = (event) => {
+      if (event.key === 'Escape' && isOpen) {
+        closeModal();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener('keydown', keyCloseModal);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', keyCloseModal);
+    };
+  }, [isOpen]);
+  
+  
   if (!isOpen || !selectedBook) {
     return null;
   }

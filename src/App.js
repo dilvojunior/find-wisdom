@@ -41,6 +41,8 @@ function App() {
     }
   }, [searchfield, limit, page]);
 
+  const isSearchValid = searchfield && searchfield.length > 3;
+
   const onSearchChange = (event) => {
     setSearchfield(event.target.value);
   };
@@ -58,8 +60,8 @@ function App() {
   const firstPageButton = (
     <button
       onClick={() => setPage(0)}
-      disabled={page === 1 - 1}
-      className={`f7 link dim mr3 ml3 br2 ph3 pv2 mb2 dib white bg-black ${page === 1 ? 'o-50' : ''}`}
+      disabled={page === 0}
+      className={`f7 link dim mr3 ml3 br2 ph3 pv2 mb2 dib white bg-black pointer ${page === 0 ? 'o-50' : ''}`}
     >
       First Page
     </button>
@@ -74,7 +76,7 @@ function App() {
     <button
       onClick={() => setPage(pages - 1)}
       key={pages}
-      className={`f6 br3 ph3 pv2 mb2 dib ${page + 1 === pages ? 'bg-black white b' : 'near-black bg-light-white black hover-bg-white'}`}
+      className={`f6 br3 ph3 pv2 mb2 dib ${page + 1 === pages ? 'bg-black white b' : 'near-black bg-light-white black hover-bg-white pointer'}`}
     >
       {pages}
     </button>
@@ -82,9 +84,9 @@ function App() {
 
   const lastPageButton = (
     <button
-      onClick={() => setPage(30 - 1)}
-      disabled={page === 30 - 1}
-      className={`f7 link dim mr3 ml3 br2 ph3 pv2 mb2 dib white bg-black ${page === 30 ? 'o-50' : ''}`}
+      onClick={() => setPage(29)}
+      disabled={page === 29}
+      className={`f7 link dim mr3 ml3 br2 ph3 pv2 mb2 dib white bg-black pointer ${page === 30 ? 'o-50' : ''}`}
     >
       Last Page
     </button>
@@ -94,16 +96,16 @@ function App() {
     <div className="bg-gray white-90 pv4 ph3 ph5-ns tc">
       <h1 style={{ fontFamily: 'Roboto Slab, Serif' }}>Find Wisdom</h1>
       <SearchBox searchChange={onSearchChange} />
-      {searchfield && searchfield.length > 3 && (
+      {isSearchValid && (
         <div className="flex justify-center mt2">
           <button 
-            className="f6 link dim br2 ba bw1 ph3 pv2 mb2 mr2 dib near-black bg-light-white" 
+            className="f6 link dim br2 ba bw1 ph3 pv2 mb2 mr2 dib near-black bg-light-white pointer" 
             onClick={() => setPage((page > 0 ? page - 1 : 0))}
           >
             Back Page
           </button>
           <button 
-            className="f6 link dim br2 ba bw1 ph3 pv2 mb2 mr2 dib near-black bg-light-white" 
+            className="f6 link dim br2 ba bw1 ph3 pv2 mb2 mr2 dib near-black bg-light-white pointer" 
             onClick={() => setPage(page + 1)}
           >
             Next Page
@@ -128,14 +130,17 @@ function App() {
           </div>
         ))}
       </div>
+        {isSearchValid && (
       <div>
-        {searchfield && searchfield.length > 3 && firstPageButton}
-        {searchfield && searchfield.length > 3 && pageButtons}
-        {searchfield && searchfield.length > 3 && lastPageButton}
+        {firstPageButton}
+        {pageButtons}
+        {lastPageButton}
       </div>
+    )}
       <BooksModal isOpen={isOpen} closeModal={closeModal} selectedBook={selectedBook} />
     </div>
   );
 }
 
 export default App;
+        
