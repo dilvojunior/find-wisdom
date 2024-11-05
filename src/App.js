@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SearchBox from './SearchBox';
 import BooksModal from './BooksModal';
+import Login from './Login';
 import './App.css';
 import 'tachyons';
 
@@ -14,7 +15,9 @@ function App() {
   const [totalPages, setTotalPages] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
-  
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+
   useEffect(() => {
     setPage(0);
   }, [searchfield]);
@@ -42,6 +45,11 @@ function App() {
   }, [searchfield, limit, page]);
 
   const isSearchValid = searchfield && searchfield.length > 3;
+
+  const handleSignIn = (event) => {
+    event.preventDefault();
+    setIsSignedIn(true); 
+  };
 
   const onSearchChange = (event) => {
     setSearchfield(event.target.value);
@@ -93,6 +101,8 @@ function App() {
   );
 
   return (
+    <div>
+      {isSignedIn ? (
     <div className="bg-gray white-90 pv4 ph3 ph5-ns tc">
       <h1 style={{ fontFamily: 'Roboto Slab, Serif' }}>Find Wisdom</h1>
       <SearchBox searchChange={onSearchChange} />
@@ -138,7 +148,12 @@ function App() {
       </div>
     )}
       <BooksModal isOpen={isOpen} closeModal={closeModal} selectedBook={selectedBook} />
+      </div>
+      ) : (
+    <Login handleSignIn={handleSignIn} isSignedIn={isSignedIn} />
+      )}
     </div>
+    
   );
 }
 
