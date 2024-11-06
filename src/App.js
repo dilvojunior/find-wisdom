@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import SearchBox from './SearchBox';
-import BooksModal from './BooksModal';
-import Login from './Login';
+import SearchBox from './Components/SearchBox';
+import BooksModal from './Components/BooksModal';
+import Navigation from './Components/Navigation';
+import Login from './Components/Login';
 import './App.css';
 import 'tachyons';
 
@@ -45,6 +46,10 @@ function App() {
   }, [searchfield, limit, page]);
 
   const isSearchValid = searchfield && searchfield.length > 3;
+
+  const handleSignOut = () => {
+    setIsSignedIn(false); 
+  };
 
   const handleSignIn = (event) => {
     event.preventDefault();
@@ -103,6 +108,8 @@ function App() {
   return (
     <div>
       {isSignedIn ? (
+    <div>
+    <Navigation handleSignOut={handleSignOut} />
     <div className="bg-gray white-90 pv4 ph3 ph5-ns tc">
       <h1 style={{ fontFamily: 'Roboto Slab, Serif' }}>Find Wisdom</h1>
       <SearchBox searchChange={onSearchChange} />
@@ -147,10 +154,11 @@ function App() {
         {lastPageButton}
       </div>
     )}
+    </div>
       <BooksModal isOpen={isOpen} closeModal={closeModal} selectedBook={selectedBook} />
       </div>
       ) : (
-    <Login handleSignIn={handleSignIn} isSignedIn={isSignedIn} />
+      <Login handleSignIn={handleSignIn} isSignedIn={isSignedIn} />
       )}
     </div>
     
