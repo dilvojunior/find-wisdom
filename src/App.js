@@ -3,6 +3,7 @@ import SearchBox from './Components/SearchBox';
 import BooksModal from './Components/BooksModal';
 import Navigation from './Components/Navigation';
 import Login from './Components/Login';
+import ParticlesApp from './Components/ParticlesApp';
 import './App.css';
 import 'tachyons';
 
@@ -109,9 +110,11 @@ function App() {
     <div>
       {isSignedIn ? (
     <div>
+    <ParticlesApp />
     <Navigation handleSignOut={handleSignOut} />
-    <div className="bg-gray white-90 pv4 ph3 ph5-ns tc">
+    <div className="black-90 pv4 ph3 ph5-ns tc">
       <h1 style={{ fontFamily: 'Roboto Slab, Serif' }}>Find Wisdom</h1>
+      <p>just type.</p>
       <SearchBox searchChange={onSearchChange} />
       {isSearchValid && (
         <div className="flex justify-center mt2">
@@ -158,7 +161,10 @@ function App() {
       <BooksModal isOpen={isOpen} closeModal={closeModal} selectedBook={selectedBook} />
       </div>
       ) : (
+      <div>
+      <ParticlesApp />
       <Login handleSignIn={handleSignIn} isSignedIn={isSignedIn} />
+      </div>
       )}
     </div>
     
