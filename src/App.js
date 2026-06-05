@@ -12,6 +12,7 @@ import './index.css';
 function App() {
   const [books, setBooks] = useState([]);
   const [searchfield, setSearchfield] = useState('');
+  const [searchBooks, setSearchBooks] = useState(false);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
@@ -21,19 +22,23 @@ function App() {
   const [selectedBook, setSelectedBook] = useState(null);
   const [isSignedIn, setIsSignedIn] = useState(false);
 
+  const handleSearch = () => {
+    setSearchBooks(true);
+  };
 
   useEffect(() => {
     setPage(0);
-  }, [searchfield]);
+  }, []);
 
   useEffect(() => {
-    if (searchfield && searchfield.length > 3) { 
+    searchBooks &&  
       setLoading(true);
       const fetchBooks = async () => {
         try {
           const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(searchfield)}&key=AIzaSyBwJ53X3ZvWnsELBSWuJgobvrLu2ES-pvo&startIndex=${page*limit}&maxResults=${limit}`);
           const result = await response.json();
           setBooks(result.items || []);
+          setSearchBooks(false);
           setLoading(false);
           setTotalItems(result.totalItems || 0);
           setTotalPages(Math.ceil(result.totalItems / limit));
@@ -43,10 +48,7 @@ function App() {
         }
       };
       fetchBooks();
-    } else {
-      setBooks([]);
-    }
-  }, [searchfield, limit, page]);
+  }, [searchBooks, limit, page]);
 
   const isSearchValid = searchfield && searchfield.length > 3;
 
@@ -119,6 +121,7 @@ function App() {
         fontFamily: 'Roboto Slab, Serif' }}>Find Wisdom</h1>
       <p>just type.</p>
       <SearchBox searchChange={onSearchChange} />
+      <button onClick={handleSearch}>Pesquisar</button>
       {isSearchValid && (
         <div className="flex justify-center mt2">
           <button
