@@ -37,7 +37,7 @@ function App() {
         try {
           const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(searchfield)}&key=AIzaSyBwJ53X3ZvWnsELBSWuJgobvrLu2ES-pvo&startIndex=${page*limit}&maxResults=${limit}`);
           const result = await response.json();
-          setBooks(result.items || []);
+          setBooks(result.items);
           setSearchBooks(false);
           setLoading(false);
           setTotalItems(result.totalItems || 0);
@@ -50,7 +50,7 @@ function App() {
       fetchBooks();
   }, [searchBooks, limit, page]);
 
-  const isSearchValid = searchfield && searchfield.length > 3;
+  // const isSearchValid = searchfield && searchfield.length > 3;
 
   const handleSignOut = () => {
     setIsSignedIn(false); 
@@ -121,8 +121,10 @@ function App() {
         fontFamily: 'Roboto Slab, Serif' }}>Find Wisdom</h1>
       <p>just type.</p>
       <SearchBox searchChange={onSearchChange} />
-      <button onClick={handleSearch}>Pesquisar</button>
-      {isSearchValid && (
+      <div className="mt3">
+      <button onClick={handleSearch}>Search</button>
+      </div>
+      {books && (
         <div className="flex justify-center mt2">
           <button
             className="f5 link dim br2 ba bw1 ph3 pv2 mb2 mr2 dib near-black bg-light-white pointer" 
@@ -140,7 +142,7 @@ function App() {
       )}
       {loading && <p>Loading...</p>}
       <div className="flex flex-wrap justify-center">
-        {!!books.length && books.map((book) => (
+        {books && books.map((book) => (
           <div  
             className="pa4"
             style={{ 
@@ -162,7 +164,7 @@ function App() {
           </div>
         ))}
       </div>
-        {isSearchValid && (
+        {books && (
       <div>
         {firstPageButton}
         {pageButtons}
