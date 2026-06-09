@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import SearchBox from './Components/SearchBox';
-import BooksModal from './Components/BooksModal';
-import Navigation from './Components/Navigation';
-import Login from './Components/Login';
-import ParticlesApp from './Components/ParticlesApp';
+import SearchBox from './Components/search-box/SearchBox';
+import BooksModal from './Components/books-modal/BooksModal';
+import Navigation from './Components/navigation/Navigation';
+import Login from './login/Login';
+import ParticlesApp from './Components/particles/ParticlesApp';
 import './App.css';
 import 'tachyons';
 import './index.css';
