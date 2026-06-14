@@ -31,18 +31,34 @@ function App() {
 
 
   useEffect(() => {
-    const testApi = async () => {
-      try {
-        const response = await fetch(`http://localhost:3001/api-google`);
-        const result = await response.json();
-        setBooks(result.items);
-        console.log('api resultado', result)
-      } catch (error) {
-        throw error;
-      }
-    };
-    testApi();
-  }, []);
+    if (searchfield && searchfield.length > 3) {
+      const fetchBooks = async () => {
+        setLoading(true);
+        try {
+          const queryParams = new URLSearchParams({
+            searchfield: searchfield,
+            page: page.toString(),
+            limit: limit.toString()
+          });
+
+          const response = await fetch(`http://localhost:3001/api-google/books?${queryParams.toString()}`);
+          const result = await response.json();
+          
+          setBooks(result.items || []);
+          setTotalItems(result.totalItems || 0);
+          console.log('api resultado', result);
+        } catch (error) {
+          console.error("Erro ao buscar livros:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchBooks();
+    } else {
+      setBooks([]);
+      setTotalItems(0);
+    }
+  }, [searchfield, page, limit]);
 
   // const isSearchValid = searchfield && searchfield.length > 3;
 
