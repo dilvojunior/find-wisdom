@@ -31,7 +31,7 @@ function App() {
 
 
   useEffect(() => {
-    if (searchfield && searchfield.length > 3) {
+    if (searchBooks) {
       const fetchBooks = async () => {
         setLoading(true);
         try {
@@ -40,25 +40,20 @@ function App() {
             page: page.toString(),
             limit: limit.toString()
           });
-
           const response = await fetch(`http://localhost:3001/api-google/books?${queryParams.toString()}`);
           const result = await response.json();
-          
           setBooks(result.items || []);
           setTotalItems(result.totalItems || 0);
-          console.log('api resultado', result);
         } catch (error) {
           console.error("Erro ao buscar livros:", error);
         } finally {
           setLoading(false);
+          setSearchBooks(false);
         }
       };
       fetchBooks();
-    } else {
-      setBooks([]);
-      setTotalItems(0);
-    }
-  }, [searchfield, page, limit]);
+    } 
+  }, [searchBooks, page, limit, searchfield]);
 
   // const isSearchValid = searchfield && searchfield.length > 3;
 
@@ -87,7 +82,10 @@ function App() {
 
   const firstPageButton = (
     <button
-      onClick={() => setPage(0)}
+      onClick={() => {
+        setPage(0);
+        setSearchBooks(true);
+      }}
       disabled={page === 0}
       className={`f5 link dim mr3 ml3 br2 ph3 pv2 mb2 dib white bg-black pointer ${page === 0 ? "o-50" : ""}`}
     >
@@ -105,7 +103,10 @@ function App() {
 
   const pageButtons = pageNumbers.map((pages) => (
     <button
-      onClick={() => setPage(pages - 1)}
+      onClick={() => {
+        setPage(pages - 1)
+        setSearchBooks(true);
+      }}
       key={pages}
       className={`f5 br3 ph3 pv2 mb2 dib ${page + 1 === pages ? "bg-black white b" : "near-black bg-light-white black hover-bg-white pointer"}`}
     >
@@ -115,7 +116,10 @@ function App() {
 
   const lastPageButton = (
     <button
-      onClick={() => setPage(29)}
+      onClick={() => {
+        setPage(29);
+        setSearchBooks(true);
+      }}
       disabled={page === 29}
       className={`f5 link dim mr3 ml3 br2 ph3 pv2 mb2 dib white bg-black pointer ${page === 30 ? "o-50" : ""}`}
     >
@@ -145,7 +149,7 @@ function App() {
             <div className="mt3">
               <button onClick={handleSearch}>Search</button>
             </div>
-            {books && (
+            {books.length > 0 && (
               <div className="flex justify-center mt2">
                 <button
                   className="f5 link dim br2 ba bw1 ph3 pv2 mb2 mr2 dib near-black bg-light-white pointer"
@@ -192,7 +196,7 @@ function App() {
                   </div>
                 ))}
             </div>
-            {books && (
+            {books.length > 0 && (
               <div>
                 {firstPageButton}
                 {pageButtons}
