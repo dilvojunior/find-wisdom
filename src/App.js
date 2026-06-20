@@ -149,22 +149,6 @@ function App() {
             <div className="mt3">
               <button onClick={handleSearch}>Search</button>
             </div>
-            {books.length > 0 && (
-              <div className="flex justify-center mt2">
-                <button
-                  className="f5 link dim br2 ba bw1 ph3 pv2 mb2 mr2 dib near-black bg-light-white pointer"
-                  onClick={() => setPage(page > 0 ? page - 1 : 0)}
-                >
-                  Back Page
-                </button>
-                <button
-                  className="f5 link dim br2 ba bw1 ph3 pv2 mb2 mr2 dib near-black bg-light-white pointer"
-                  onClick={() => setPage(page + 1)}
-                >
-                  Next Page
-                </button>
-              </div>
-            )}
             {loading && <p>Loading...</p>}
             <div className="flex flex-wrap justify-center">
               {books &&
